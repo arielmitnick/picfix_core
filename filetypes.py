@@ -1,7 +1,5 @@
 from enum import Enum
 
-BASE_LOCATION = "/Users/ariel/Desktop/"
-
 
 class SupportedFileTypes(Enum):
     JPEG = "jpeg"
