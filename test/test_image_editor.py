@@ -5,24 +5,14 @@ import cv2
 from image_editor import ImageEditor
 from test.test_utils import mse
 
-
-expected_image_location = 'resources/photo_of_shirt_background_removed.jpg'
-
-
-# def test_image_size():
-#     image_location = 'resources/photo_of_shirt_ORIGINAL.jpg'
-#     image = cv2.imread(image_location)
-#     print(image.shape)
-#     assert 1==2
-
-# l = [1, 2, 3, 4]
-# x = tuple(l)
-# assert x == (1, 2, 3, 4)
-#
-#
+RESOURCES_DIR = 'resources/'
+OUTPUT_DIR = '{}{}'.format(RESOURCES_DIR, 'output/')
+BACKGROUND_REMOVED_EXPECTED = '{}{}'.format(RESOURCES_DIR, 'photo_of_shirt_background_removed.jpg')
+RESIZED_10_EXPECTED = '{}{}'.format(OUTPUT_DIR, 'resized_10_EXPECTED.jpg')
+RESIZED_10_TEST = '{}{}'.format(OUTPUT_DIR, 'resized_10_TEST.jpg')
 
 
-def test_rect_getter():
+def test_rect_creation():
     image_location = 'resources/photo_of_shirt_ORIGINAL.jpg'
     image = cv2.imread(image_location)
     editor = ImageEditor(image)
@@ -30,8 +20,8 @@ def test_rect_getter():
     expected_rect = [302, 302, 2419, 2419]
     assert actual_rect == expected_rect
 
-#TODO: fix rect setter function :(
-def test_rect_setter__valid():
+
+def test_edit_rect():
     image_location = 'resources/photo_of_shirt_ORIGINAL.jpg'
     image = cv2.imread(image_location)
     editor = ImageEditor(image)
@@ -41,41 +31,34 @@ def test_rect_setter__valid():
     assert editor.rect == [10, 10, 500, 500]
 
 
-def test_remove_background():
+def test_initialize_with_rect():
     image_location = 'resources/photo_of_shirt_ORIGINAL.jpg'
     image = cv2.imread(image_location)
-    editor = ImageEditor(image)
+    rect = [10, 10, 500, 500]
+    editor = ImageEditor(image, rect)
 
-    image = editor.remove_background(image)
-    expected_image = cv2.imread(expected_image_location)
-
-    assert mse(image, expected_image) == 0
+    assert editor.rect == [10, 10, 500, 500]
 
 
-def test_save_image():
+def test_resize_image():
     try:
-        source_location = 'resources/photo_of_shirt_ORIGINAL.jpg'
-        image = cv2.imread(source_location)
+        image_location = 'resources/photo_of_shirt_ORIGINAL.jpg'
+        image = cv2.imread(image_location)
         editor = ImageEditor(image)
-        dest_dir_location = 'resources/output/'
-        photo_name = 'photo_of_shirt_background_removed.jpg'
-        dest_location = '{}{}'.format(dest_dir_location, photo_name)
+        assert image.shape[0] == 3024
+        assert image.shape[1] == 3024
 
-        if not os.path.exists(dest_dir_location):
-            os.makedirs(dest_dir_location)
+        actual_resized = editor.resize_image()
+        assert actual_resized.shape[0] == 302
+        assert actual_resized.shape[1] == 302
 
-        image = editor.remove_background(image)
-        editor.save_image(image, dest_location)
+        editor.save_image(RESIZED_10_TEST, actual_resized)
 
-        output_files = [name for name in os.listdir(dest_dir_location) if os.path.isfile(name)]
-        assert len(output_files) == 1
-        assert output_files[0] == 'photo_of_shirt_background_removed_jpg'
+        actual_resized = cv2.imread(RESIZED_10_TEST)
+        expected_resized = cv2.imread(RESIZED_10_EXPECTED)
 
-        img = cv2.imread(dest_location)
-        expected_image = cv2.imread(expected_image_location)
-
-        assert mse(img, expected_image) == 0
-
+        assert mse(actual_resized, expected_resized) == 0
     finally:
-        pass
-        #os.remove(dest_location)
+        os.remove(RESIZED_10_TEST)
+
+

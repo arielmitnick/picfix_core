@@ -9,11 +9,11 @@ class ImageEditor(object):
 
     def __init__(self, image, rect=None):
         self.image = image
-        self.rect = rect
+        self.rect = rect if rect else self.deduce_rect()
+        self.mask = np.zeros(image.shape[:2], np.uint8)
 
-    @property
-    def rect(self):
-        """Getter for foreground rectangle.
+    def deduce_rect(self):
+        """Creates foreground rectangle.
 
         Returns:
             list: [x,y,w,h]
@@ -25,23 +25,7 @@ class ImageEditor(object):
         rect_height = int(np.floor(height * 0.8))
         return [rect_x, rect_y, rect_width, rect_height]
 
-    @rect.setter
-    def rect(self, proposed_rect):
-        """Place image on a white background.
-
-        Args:
-            proposed_rect (list): Rectangle representing definite foreground.
-
-        Returns:
-            list: [x,y,w,h]
-        """
-        x, y, w, h = proposed_rect
-        width, height, _ = self.image.shape
-        if not ((0 < x < w) and (0 < y < h) and (w < width) and (h < height)):
-            raise ValueError("Invalid rectangle for image dimensions.")
-        self._rect = proposed_rect
-
-    def remove_background(self, image):
+    def remove_background(self, image, iter_count=5):
         """Place image on a white background.
 
         Args:
@@ -50,14 +34,43 @@ class ImageEditor(object):
         Returns:
             PIL.Image: edited image
         """
-        mask = np.zeros(image.shape[:2], np.uint8)
-        cv2.grabCut(image, mask, tuple(self.rect), self.bgd_model, self.fgd_model, iterCount=5,
+        cv2.grabCut(image, self.mask, tuple(self.rect), self.bgd_model, self.fgd_model, iterCount=5,
                     mode=cv2.GC_INIT_WITH_RECT)
 
-        mask_2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
+        mask_2 = np.where((self.mask == 2) | (self.mask == 0), 0, 1).astype('uint8')
         image[mask_2 == 0, :] = [255, 255, 255]
 
         return image
 
-    def save_image(self, image, location):
+    def save_image(self, location, image):
         cv2.imwrite(location, image)
+
+    def resize_image(self, scale_percent=10):
+        """Place image on a white background.
+
+        Args:
+            scale_percent (int): Percent by which image is resized. 100 represents current size of image.
+            If scale_percent is greater than 100, image will be enlarged. If scale_percent is less than 100,
+            image will be shrunk.
+
+        Returns:
+            cv2.: resized image
+        """
+        # calculate the 50 percent of original dimensions
+        width = int(self.image.shape[1] * scale_percent / 100)
+        height = int(self.image.shape[0] * scale_percent / 100)
+
+        # dsize
+        dsize = (width, height)
+
+        # interpolation
+        if scale_percent > 100:
+            interpolation = cv2.INTER_CUBIC
+        elif 0 < scale_percent <= 100:
+            interpolation = cv2.INTER_AREA
+        else:
+            raise ValueError("Negative resize percentages are not supported.")
+
+        # resize image
+        return cv2.resize(self.image, dsize, interpolation)
+
