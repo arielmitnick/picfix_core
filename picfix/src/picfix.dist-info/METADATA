@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.4
+Name: picfix
+Formal-Name: PicFix
+App-ID: com.example.picfix
+Version: 0.0.1
+Home-page: https://example.com/picfix
+Author: Ariel Mitnick
+Author-email: ariel.s.mitnick@gmail.com
+Summary: Remove the background from your photos!
