@@ -6,9 +6,6 @@ from image_editor import ImageEditor
 RESOURCES_DIR = 'resources/'
 OUTPUT_DIR = '{}{}'.format(RESOURCES_DIR, 'output/')
 ORIGINAL = '{}{}'.format(RESOURCES_DIR, 'photo_of_shirt_ORIGINAL.jpg')
-BACKGROUND_REMOVED_EXPECTED = '{}{}'.format(RESOURCES_DIR, 'photo_of_shirt_background_removed.jpg')
-RESIZED_10_EXPECTED = '{}{}'.format(OUTPUT_DIR, 'resized_10_EXPECTED.jpg')
-RESIZED_10_TEST = '{}{}'.format(OUTPUT_DIR, 'resized_10_TEST.jpg')
 
 
 def test_image_constructor():
@@ -38,5 +35,6 @@ def test_edit_rect():
 def test_initialize_with_rect():
     rect = [10, 10, 500, 500]
     image = ImageEditor.load_image(ORIGINAL, rect)
+
     assert image.rect == [10, 10, 500, 500]
 
