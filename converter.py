@@ -8,14 +8,6 @@ class Converter(tuple):
 
     """Converts files from input type to output type.
 
-    If the class has public attributes, they may be documented here
-    in an ``Attributes`` section and follow the same formatting as a
-    function's ``Args`` section. Alternatively, attributes may be documented
-    inline with the attribute's declaration (see __init__ method below).
-
-    Properties created with the ``@property`` decorator should be documented
-    in the property's getter method.
-
     Attributes:
         input_filetype (str): Starting filetype
         output_filetype (str): Desired filetype
@@ -31,10 +23,12 @@ class Converter(tuple):
 
     @property
     def input_filetype(self):
+        """Input filetype"""
         return self[0]
 
     @property
     def output_filetype(self):
+        """Output filetype"""
         return self[1]
 
     def __setattr(self, *ignored):
