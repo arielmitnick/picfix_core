@@ -5,9 +5,9 @@ import shutil
 import cv2
 import pytest
 
-from converter import Converter
-from filetypes import HeifFileType, JpegFileType
-from test.test_utils import mse
+from picfix.src.picfix.converter import Converter
+from picfix.src.picfix.filetypes import HeifFileType, JpegFileType
+from picfix.test import mse
 
 
 def test_converter_constructor__good():

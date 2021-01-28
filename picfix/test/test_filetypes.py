@@ -1,4 +1,4 @@
-from filetypes import SupportedFileTypes, JpegFileType, HeifFileType
+from picfix.src.picfix.filetypes import SupportedFileTypes, JpegFileType, HeifFileType
 
 
 def test_filetype__jpeg_init():

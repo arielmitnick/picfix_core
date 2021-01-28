@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from image import Image
+from src.picfix.image import Image
 
 
 class ImageEditor(object):
@@ -14,6 +14,7 @@ class ImageEditor(object):
 
     @staticmethod
     def load_image(location, rect=None, grayscale=False):
+        print(location)
         flags = cv2.IMREAD_GRAYSCALE if grayscale else None
         return Image(cv2.imread(location, flags=flags), rect)
 

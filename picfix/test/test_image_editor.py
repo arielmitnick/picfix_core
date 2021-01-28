@@ -4,9 +4,9 @@ import cv2
 import numpy as np
 import pytest
 
-from image import Image
-from image_editor import ImageEditor
-from test.test_utils import mse
+from picfix.src.picfix.image import Image
+from picfix.src.picfix.image_editor import ImageEditor
+from picfix.test import mse
 
 RESOURCES_DIR = 'resources/'
 OUTPUT_DIR = '{}{}'.format(RESOURCES_DIR, 'output/')

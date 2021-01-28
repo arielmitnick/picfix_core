@@ -1,7 +1,7 @@
 import cv2
 
-from image import Image
-from image_editor import ImageEditor
+from picfix.src.picfix.image import Image
+from picfix.src.picfix.image_editor import ImageEditor
 
 RESOURCES_DIR = 'resources/'
 OUTPUT_DIR = '{}{}'.format(RESOURCES_DIR, 'output/')
