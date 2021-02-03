@@ -4,8 +4,8 @@ import cv2
 import numpy as np
 import pytest
 
-from image import Image
-from image_editor import ImageEditor
+from core.image import Image
+from core.image_editor import ImageEditor
 from test.test_utils import mse
 
 RESOURCES_DIR = 'resources/'

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from image import Image
+from core.image import Image
 
 
 class ImageEditor(object):
@@ -11,6 +11,10 @@ class ImageEditor(object):
         bgd_model = np.zeros((1, 65), np.float64)
         fgd_model = np.zeros((1, 65), np.float64)
         return bgd_model, fgd_model
+
+    @staticmethod
+    def say_hi():
+        return "hi there!"
 
     @staticmethod
     def load_image(location, rect=None, grayscale=False):
