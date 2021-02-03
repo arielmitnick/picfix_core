@@ -13,11 +13,14 @@ RUN pip3 install --upgrade pip
 
 # Install Python packages
 RUN mkdir /packages
-RUN echo "opencv-python-headless" >> /packages/requirements.txt
-RUN echo "flask" >> /packages/requirements.txt
-RUN echo "numpy" >> /packages/requirements.txt
+COPY requirements.txt /packages/requirements.txt
+#RUN echo "opencv-python-headless" >> /packages/requirements.txt
+#RUN echo "flask" >> /packages/requirements.txt
+#RUN echo "numpy" >> /packages/requirements.txt
 RUN mkdir -p /packages/picfix-python-3.7/python/lib/python3.7/site-packages
 RUN pip3 install -r /packages/requirements.txt -t /packages/picfix-python-3.7/python/lib/python3.7/site-packages
+
+COPY picfix.py
 
 
 #COPY requirements.txt .
@@ -37,5 +40,5 @@ WORKDIR /packages/
 RUN rm -rf /packages/picfix-python-3.7/
 
 WORKDIR /
-# Command to run on contianer start
+# Command to run on container start
 CMD [ "python", "./picfix.py" ]

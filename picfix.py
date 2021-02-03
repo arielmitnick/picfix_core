@@ -1,6 +1,7 @@
 from flask import Flask
 
 from core.image_editor import ImageEditor
+import logging
 
 server = Flask(__name__)
 
@@ -11,7 +12,10 @@ def hello():
 
 
 @server.route("/image_editor_call")
-def image_editor_call():
+def image_editor_call(event, context):
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logger.info('event parameter: {}'.format(event))
     editor = ImageEditor()
     return editor.say_hi()
 
