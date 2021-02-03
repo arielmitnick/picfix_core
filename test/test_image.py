@@ -1,7 +1,7 @@
 import cv2
 
-from image import Image
-from image_editor import ImageEditor
+from core.image import Image
+from core.image_editor import ImageEditor
 
 RESOURCES_DIR = 'resources/'
 OUTPUT_DIR = '{}{}'.format(RESOURCES_DIR, 'output/')

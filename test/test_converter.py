@@ -5,8 +5,8 @@ import shutil
 import cv2
 import pytest
 
-from converter import Converter
-from filetypes import HeifFileType, JpegFileType
+from core.converter import Converter
+from core.filetypes import HeifFileType, JpegFileType
 from test.test_utils import mse
 
 
